@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
@@ -62,4 +63,30 @@ class AccountControllerTest {
         val acc = repository.findById(accountSaved.id!!)
         Assertions.assertFalse(acc.isPresent)
     }
+
+    @Test
+    fun `Test create account empty name Error`() {
+        val accountSaved = with(repository) { save(Account(name = "" ,
+                                              document = "011T788" , phone = "61977844541")) }
+
+        val json = ObjectMapper().writeValueAsString(accountSaved)
+        mockMvc.perform(MockMvcRequestBuilders.post("/account")
+                                              .accept(MediaType.APPLICATION_JSON)
+                                              .contentType(MediaType.APPLICATION_JSON)
+                                              .content(json))
+                                              .andExpect(MockMvcResultMatchers.status().isBadRequest)
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 }

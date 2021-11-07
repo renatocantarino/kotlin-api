@@ -4,12 +4,15 @@ import cantarino.api.ktapi.domain.Account
 import cantarino.api.ktapi.repositories.IAccountRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.util.Assert
 import java.lang.RuntimeException
 import java.util.*
 
 @Service
 class IAccountServiceImpl(private val repository: IAccountRepository) : IAccountService {
     override fun create(account: Account): Account {
+
+        Assert.hasLength(account.name)
         return repository.save(account)
     }
 

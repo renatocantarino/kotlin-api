@@ -5,6 +5,7 @@ import cantarino.api.ktapi.services.IAccountService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/account")
@@ -12,7 +13,7 @@ class AccountController(private val accountService: IAccountService)
 {
 
     @PostMapping
-    fun create(@RequestBody account: Account) : Account = accountService.create(account)
+    fun create(@Valid @RequestBody account: Account) : Account = accountService.create(account)
 
     @GetMapping
     fun all() : List<Account> = accountService.getAll()
