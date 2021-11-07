@@ -1,4 +1,4 @@
-package cantarino.api.ktapi.Repositories
+package cantarino.api.ktapi.repositories
 
 import cantarino.api.ktapi.domain.Account
 import org.springframework.data.jpa.repository.JpaRepository

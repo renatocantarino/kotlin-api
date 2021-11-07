@@ -1,7 +1,9 @@
-package cantarino.api.ktapi.Controllers
+package cantarino.api.ktapi.controllers
 
-import cantarino.api.ktapi.Repositories.IAccountRepository
+import cantarino.api.ktapi.repositories.IAccountRepository
 import cantarino.api.ktapi.domain.Account
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -47,7 +49,17 @@ class AccountControllerTest {
             .andDo(MockMvcResultHandlers.print())
 
     }
+    @Test
+    fun `Test delete byId`() {
+        val accountSaved = with(repository) { save(Account(name = "test" ,
+                                                            document = "011T788" , phone = "61977844541")) }
 
+        val json = ObjectMapper().writeValueAsString(accountSaved)
+        mockMvc.perform(MockMvcRequestBuilders.delete("/account/${accountSaved.id}"))
+            .andExpect(MockMvcResultMatchers.status().isAccepted)
+            .andDo(MockMvcResultHandlers.print())
 
-
+        val acc = repository.findById(accountSaved.id!!)
+        Assertions.assertFalse(acc.isPresent)
+    }
 }
